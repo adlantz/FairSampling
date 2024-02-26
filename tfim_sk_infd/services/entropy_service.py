@@ -26,17 +26,17 @@ def get_bipartition_permutations(N: int) -> np.ndarray:
 def get_entanglement_entropy_information(basis: IsingBasis, psi0: np.ndarray):
     bp_perms = get_bipartition_permutations(basis.N)
 
-    Svn = np.zeros(len(bp_perms))
-    sEng = np.zeros((len(bp_perms), 2 ** (basis.N // 2)))
+    svn = np.zeros(len(bp_perms))
+    s_eng = np.zeros((len(bp_perms), 2 ** (basis.N // 2)))
     for i, P in enumerate(bp_perms):
         A = P[0 : (basis.N // 2)]
         B = P[(basis.N // 2) : basis.N]
         S = get_svd(basis, A, B, psi0)
 
-        Svn[i] = entropy(S)
-        sEng[i] = np.sort(0 - 2 * np.log(S))
+        svn[i] = entropy(S)
+        s_eng[i] = np.sort(0 - 2 * np.log(S))
 
-    return Svn, sEng
+    return svn, s_eng
 
 
 def get_svd(
