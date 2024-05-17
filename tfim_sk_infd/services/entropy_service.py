@@ -51,7 +51,7 @@ def get_svd(
     a_basis = IsingBasis(len(A))
     b_basis = IsingBasis(len(B))
 
-    # Build psi matrix |psi><psi|
+    # Build psi matrix
     psiMat = np.zeros([a_basis.M, b_basis.M])
     for index in range(basis.M):
         state = basis.state(index)

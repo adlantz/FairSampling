@@ -13,4 +13,4 @@ def save_obj(database: str, path: str, filename: str, json_str_obj: dict):
         os.mkdir(directory_path)
 
     with open(f"{directory_path}/{filename}.json", "w") as json_file:
-        json.dump(json_str_obj, json_file, indent="\t")
+        json.dump(json_str_obj, json_file, indent=1)
