@@ -3,3 +3,6 @@ scipy
 progressbar
 matplotlib
 qutip
+networkx
+sqlalchemy
+alembic

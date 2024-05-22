@@ -88,3 +88,17 @@ def get_toy_Jij(index: int) -> Jij:
             return Jij(np.array([[0, 1, -1, -1], [0, -1, 0, -1]]))
         case _:
             raise Exception(f"Toy model for index {index} does not exist")
+
+
+def make_J_adj(Jij: Jij, N: int) -> np.ndarray:
+    """
+    Turns Jij matrix from form built in tfim.py to Jij adjacency matrix where J[i][j] is the bond between spins i and j
+    """
+    Jij_matrix = Jij.matrix
+    J_adj = np.zeros((N, N))
+    for j in range(N // 2):
+        for i in range(N):
+            J_adj[i][(i - j + N - 1) % N] = J_adj[(i - j + N - 1) % N][i] = Jij_matrix[
+                j
+            ][i]
+    return J_adj

@@ -1,0 +1,4 @@
+How to make changes to database.
+ - Make changes to models.py
+ - In terminal, in `/database/` folder, run `alembic revision --autogenerate -m "changes description"`
+ - then run `alembic upgrade head`
