@@ -10,3 +10,6 @@ class InstancesN8(Base):
     seed = Column(Integer, primary_key=True)
     Jij_matrix = Column(JSON, nullable=False)
     ground_states = Column(JSON, nullable=False)
+    degeneracy = Column(Integer, nullable=True)
+    reduced_gs = Column(JSON, nullable=True)
+    max_inter_gs_hd = Column(Integer, nullable=True)
