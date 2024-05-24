@@ -7,7 +7,7 @@ N = 8
 
 with data_service.get_session() as session:
 
-    instances = session.query(InstancesN8).all()
+    instances = session.query(InstancesN8).where(InstancesN8.reduced_gs.is_(None)).all()
 
     for instance in instances:
         reduced_gs, max_h_d = ground_state_service.maximal_half_clique(

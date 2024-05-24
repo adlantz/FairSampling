@@ -12,7 +12,12 @@ N = 8
 with data_service.get_session() as session:
 
     instances = (
-        session.query(InstancesN8).where(InstancesN8.post_anneal_supp_ratio > 0.9).all()
+        session.query(InstancesN8)
+        .where(
+            (InstancesN8.post_anneal_supp_ratio > 0.9)
+            & (InstancesN8.post_anneal_gs.is_(None))
+        )
+        .all()
     )
 
     for instance in instances:
@@ -37,6 +42,8 @@ with data_service.get_session() as session:
             instance.post_anneal_overlap_dist = suppressed_overlap_dist.tolist()
             instance.post_anneal_od_mean = round(np.mean(suppressed_overlap_dist), 5)
             instance.post_anneal_od_variance = round(np.var(suppressed_overlap_dist), 5)
+
+    print(f"updated {len(instances)} columns")
 
     session.commit()
 

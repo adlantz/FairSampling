@@ -12,6 +12,7 @@ with data_service.get_session() as session:
         .where(
             (InstancesN8.post_anneal_gs.is_not(None))
             & (InstancesN8.post_anneal_deg > 1)
+            & (InstancesN8.post_anneal_max_inter_gs_hd.is_(None))
         )
         .all()
     )

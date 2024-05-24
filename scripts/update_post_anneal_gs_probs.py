@@ -1,9 +1,10 @@
 import numpy as np
 
 from database.models import InstancesN8
-from tfim_sk_infd.services import ground_state_service, qutip_service
+from tfim_sk_infd.services import qutip_service
 from tfim_sk_infd.models.Jij import Jij
 import data_service
+from tqdm import tqdm
 
 N = 8
 h = 1e-1
@@ -20,7 +21,7 @@ with data_service.get_session() as session:
     )
 
     Ht = qutip_service.transverse_field_hamiltonian(N)
-    for instance in instances:
+    for instance in tqdm(instances):
 
         Jij_obj = Jij(np.array(instance.Jij_matrix))
 

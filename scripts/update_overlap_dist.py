@@ -9,7 +9,11 @@ N = 8
 
 with data_service.get_session() as session:
 
-    instances = session.query(InstancesN8).where(InstancesN8.degeneracy > 2).all()
+    instances = (
+        session.query(InstancesN8)
+        .where((InstancesN8.degeneracy > 2) & (InstancesN8.overlap_dist.is_(None)))
+        .all()
+    )
 
     for instance in instances:
 

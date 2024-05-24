@@ -6,9 +6,9 @@ from tfim_sk_infd.services import jij_service
 
 ## ADJUST THESE
 N = 8
-seed_start = 10
-seed_end = 1000
-batch_size = 100
+seed_start = 1000
+seed_end = 10000
+batch_size = 1000
 
 
 # SCRIPT
