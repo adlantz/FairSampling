@@ -1,17 +1,18 @@
 import data_service
 import numpy as np
-from database.models import InstancesN8
-
+from typing import Type
 from tfim_sk_infd.services import jij_service
 
 ## ADJUST THESE
-N = 8
-seed_start = 1000
-seed_end = 10000
-batch_size = 1000
+N = 12
+seed_start = 0
+seed_end = 1000
+batch_size = 100
 
 
 # SCRIPT
+
+Instance = data_service.get_instance_class(N)
 
 with data_service.get_session() as session:
     instances = []
@@ -21,7 +22,7 @@ with data_service.get_session() as session:
         JZZ = jij_service.JZZ_SK(Jij)
         gs = np.where(JZZ.diagonal() == JZZ.diagonal().max())[0]
         instances.append(
-            InstancesN8(
+            Instance(
                 seed=seed, Jij_matrix=Jij.matrix.tolist(), ground_states=gs.tolist()
             )
         )

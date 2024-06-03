@@ -1,15 +1,21 @@
-from database.models import InstancesN8
 from tfim_sk_infd.services import ground_state_service
 import data_service
+from tqdm import tqdm
 
-N = 8
+from database.models import InstancesN8, InstancesN12
+
+N = 12
+
+Instance = data_service.get_instance_class(N)
 
 
 with data_service.get_session() as session:
 
-    instances = session.query(InstancesN8).where(InstancesN8.reduced_gs.is_(None)).all()
+    instances: list[InstancesN8 | InstancesN12] = (
+        session.query(Instance).where(Instance.reduced_gs.is_(None)).all()
+    )
 
-    for instance in instances:
+    for instance in tqdm(instances):
         reduced_gs, max_h_d = ground_state_service.maximal_half_clique(
             instance.ground_states, N
         )
