@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, JSON, REAL
+from sqlalchemy import Column, Integer, JSON, REAL, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -27,6 +27,12 @@ class InstancesN8(Base):
     post_anneal_od_mean = Column(REAL, nullable=True)
     post_anneal_od_variance = Column(REAL, nullable=True)
 
+    # Diagonalization info
+    diag_run_h_array = Column(JSON, nullable=True)
+    diag_run_fidelities = Column(JSON, nullable=True)
+    diag_run_e_gaps = Column(JSON, nullable=True)
+    diag_run_failure = Column(Boolean, nullable=True)
+
 
 class InstancesN12(Base):
     __tablename__ = "instances_N12"
@@ -49,3 +55,9 @@ class InstancesN12(Base):
     post_anneal_overlap_dist = Column(JSON, nullable=True)
     post_anneal_od_mean = Column(REAL, nullable=True)
     post_anneal_od_variance = Column(REAL, nullable=True)
+
+    # Diagonalization info
+    diag_run_h_array = Column(JSON, nullable=True)
+    diag_run_fidelities = Column(JSON, nullable=True)
+    diag_run_e_gaps = Column(JSON, nullable=True)
+    diag_run_failure = Column(Boolean, nullable=True)

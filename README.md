@@ -8,5 +8,5 @@ Results in `data/`, scripts to generate data in `scripts/`.
 
 Because of python's weirdness around importing, scripts need to be run as modules from the root. I.e
 ```
-python -m scripts.toy_models.script
+python3 -m scripts.toy_models.script
 ```
