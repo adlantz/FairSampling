@@ -1,17 +1,17 @@
 import numpy as np
-from database.models import InstancesN8, InstancesN12
+from database.models import InstancesN8, InstancesN12, InstancesN16
 from tfim_sk_infd.services import ground_state_service
 import data_service
 
 
-N = 12
+N = 16
 
 
 Instance = data_service.get_instance_class(N)
 
 with data_service.get_session() as session:
 
-    instances: list[InstancesN8 | InstancesN12] = (
+    instances: list[InstancesN8 | InstancesN12 | InstancesN16] = (
         session.query(Instance).where(Instance.post_anneal_gs_probs.is_not(None)).all()
     )
     od_bins = np.array([((2 * i) / N) - 1 for i in range(N + 1)])

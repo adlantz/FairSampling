@@ -2,7 +2,7 @@ import json
 import os
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, Session
-from database.models import InstancesN8, InstancesN12
+from database.models import InstancesN8, InstancesN12, InstancesN16
 
 
 def get_session() -> Session:
@@ -13,9 +13,10 @@ def get_session() -> Session:
     return sessionmaker(bind=engine)()
 
 
+# METHOD STORE DATA IN FILES LOCALLY
 def save_obj(database: str, path: str, filename: str, json_str_obj: dict):
     """
-    Save json serializeable dict to given location as json file.
+    Save json serializeable dict given location as json file.
     """
 
     directory_path = f"data/{database}/{path}"
@@ -27,5 +28,5 @@ def save_obj(database: str, path: str, filename: str, json_str_obj: dict):
         json.dump(json_str_obj, json_file, indent=1)
 
 
-def get_instance_class(N: int) -> InstancesN8 | InstancesN12:
-    return {8: InstancesN8, 12: InstancesN12}.get(N)
+def get_instance_class(N: int) -> InstancesN8 | InstancesN12 | InstancesN16:
+    return {8: InstancesN8, 12: InstancesN12, 16: InstancesN16}.get(N)

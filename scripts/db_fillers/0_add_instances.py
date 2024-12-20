@@ -1,12 +1,12 @@
 import data_service
 import numpy as np
-from typing import Type
+from tqdm import tqdm
 from tfim_sk_infd.services import jij_service
 
 ## ADJUST THESE
-N = 12
-seed_start = 0
-seed_end = 1000
+N = 16
+seed_start = 1000
+seed_end = 2000
 batch_size = 100
 
 
@@ -16,7 +16,7 @@ Instance = data_service.get_instance_class(N)
 
 with data_service.get_session() as session:
     instances = []
-    for seed in range(seed_start, seed_end):
+    for seed in tqdm(range(seed_start, seed_end)):
 
         Jij = jij_service.Jij_instance(N, seed)
         JZZ = jij_service.JZZ_SK(Jij)

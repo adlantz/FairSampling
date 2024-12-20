@@ -2,7 +2,7 @@ from sqlalchemy import update, func
 import data_service
 
 
-N = 12
+N = 16
 Instance = data_service.get_instance_class(N)
 
 

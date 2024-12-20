@@ -1,6 +1,6 @@
 import numpy as np
 
-from database.models import InstancesN8, InstancesN12
+from database.models import InstancesN8, InstancesN12, InstancesN16
 from tfim_sk_infd.services import qutip_service
 from tfim_sk_infd.models.Jij import Jij
 from tfim_sk_infd.models.SKSpinGlass import SKSpinGlass
@@ -9,7 +9,7 @@ from tqdm import tqdm
 from scipy import sparse
 from scipy.sparse import linalg as spla
 
-N = 12
+N = 16
 M = 2**N
 
 # Spin inversion operator
@@ -26,8 +26,11 @@ Instance = data_service.get_instance_class(N)
 
 with data_service.get_session() as session:
 
-    instances: list[InstancesN8 | InstancesN12] = (
-        session.query(Instance).where(Instance.degeneracy > 2).all()
+    instances: list[InstancesN8 | InstancesN12 | InstancesN16] = (
+        session.query(Instance)
+        .where(Instance.degeneracy > 2)
+        .where(Instance.diag_run_failure.is_(None))
+        .all()
     )
 
     for instance in tqdm(instances):
