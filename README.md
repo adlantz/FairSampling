@@ -4,7 +4,7 @@ This is my code for the physics research I am doing Professor Chris Herdman from
 
 We are exploring quantum annealing on a Ising model spin glass, specifically examing the entanglement structure and "macroscropic quantumness" as it relates to computational hardness and the overall efficacy of quantum adiabatic computation.
 
-# Specs
+## Specs
 
 Uses a SQLite database with Alembic (stored locally in `database/fair_sampling.db`)
 
