@@ -16,7 +16,6 @@ with data_service.get_session() as session:
     instances: list[InstancesN8 | InstancesN12 | InstancesN16] = (
         session.query(Instance)
         .where(Instance.degeneracy > 2)
-        .where(Instance.qfi_fair_sampling.is_(None))
         .all()
     )
 
@@ -31,7 +30,7 @@ with data_service.get_session() as session:
         for i in range(deg):
             for j in range(i + 1, deg):
                 H[i][j] = H[j][i] = gss.base_N_hamming_distance(
-                    gs_array[i], gs_array[j], N
+                    gs_array[i], gs_array[j]
                 )
                 P[i][j] = instance.post_anneal_gs_probs[j]
                 P[j][i] = instance.post_anneal_gs_probs[i]
@@ -44,14 +43,14 @@ with data_service.get_session() as session:
                     - np.sum(H * P, axis=1) ** 2
                 )
             )
-            / N
+            / (N**2)
         )
         instance.qfi_fair_sampling = (
             max(
                 (4 / deg)
                 * ((linalg.norm(H, axis=1)) ** 2 - (1 / deg) * (np.sum(H, axis=1)) ** 2)
             )
-            / N
+            / (N**2)
         )
 
     session.commit()

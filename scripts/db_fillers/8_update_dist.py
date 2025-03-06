@@ -34,7 +34,7 @@ with data_service.get_session() as session:
         for i in range(deg):
             for j in range(i + 1, deg):
                 hamming_matrix[i][j] = hamming_matrix[j][i] = (
-                    gss.base_N_hamming_distance(gs[i], gs[j], N)
+                    gss.base_N_hamming_distance(gs[i], gs[j])
                 )
 
         gs_indeces = [i for i in range(deg)]
