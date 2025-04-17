@@ -14,9 +14,7 @@ Instance = data_service.get_instance_class(N)
 
 with data_service.get_session() as session:
     instances: list[InstancesN8 | InstancesN12 | InstancesN16] = (
-        session.query(Instance)
-        .where(Instance.degeneracy > 2)
-        .all()
+        session.query(Instance).where(Instance.degeneracy > 2).all()
     )
 
     for instance in tqdm(instances):
@@ -35,23 +33,13 @@ with data_service.get_session() as session:
                 P[i][j] = instance.post_anneal_gs_probs[j]
                 P[j][i] = instance.post_anneal_gs_probs[i]
 
-        instance.qfi_post_anneal = (
-            max(
-                4
-                * (
-                    linalg.norm(H * np.sqrt(P), axis=1) ** 2
-                    - np.sum(H * P, axis=1) ** 2
-                )
-            )
-            / (N**2)
-        )
-        instance.qfi_fair_sampling = (
-            max(
-                (4 / deg)
-                * ((linalg.norm(H, axis=1)) ** 2 - (1 / deg) * (np.sum(H, axis=1)) ** 2)
-            )
-            / (N**2)
-        )
+        instance.qfi_post_anneal = max(
+            4 * (np.sum(H * H * P, axis=1) - np.sum(H * P, axis=1) ** 2)
+        ) / (N**2)
+        instance.qfi_fair_sampling = max(
+            (4 / deg)
+            * ((linalg.norm(H, axis=1)) ** 2 - (1 / deg) * (np.sum(H, axis=1)) ** 2)
+        ) / (N**2)
 
     session.commit()
     session.close()
