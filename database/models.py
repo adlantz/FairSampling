@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, JSON, REAL, Boolean
+from sqlalchemy import Column, Integer, JSON, REAL, Boolean, PrimaryKeyConstraint
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -114,3 +114,22 @@ class InstancesN16(Base):
     qfi_post_anneal = Column(Integer, nullable=True)
     dist_fair_sampling = Column(Integer, nullable=True)
     dist_post_anneal = Column(Integer, nullable=True)
+
+
+class LargeN(Base):
+    __tablename__ = "large_n"
+
+    size = Column(Integer, nullable=False)
+    seed = Column(Integer, nullable=False)
+
+    ground_states = Column(JSON, nullable=False)
+    degeneracy = Column(Integer, nullable=True)
+    reduced_gs = Column(JSON, nullable=True)
+
+    overlap_dist = Column(JSON, nullable=True)
+    od_mean = Column(REAL, nullable=True)
+    od_variance = Column(REAL, nullable=True)
+
+    n_eff = Column(Integer, nullable=True)
+
+    __table_args__ = (PrimaryKeyConstraint("size", "seed"),)
