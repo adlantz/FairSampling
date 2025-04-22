@@ -6,7 +6,7 @@ import numpy as np
 from tqdm import tqdm
 
 
-N = 20
+N = 30
 
 with data_service.get_session() as session:
     instances = []

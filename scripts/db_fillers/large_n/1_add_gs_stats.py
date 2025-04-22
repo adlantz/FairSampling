@@ -7,28 +7,27 @@ import numpy as np
 from tqdm import tqdm
 
 
-N = 20
+N = 30
 
 with data_service.get_session() as session:
 
     instances: list[LargeN] = (
-        session.query(LargeN)
-        .where(LargeN.degeneracy > 2)
-        .where(LargeN.reduced_gs.is_(None))
-        .all()
+        session.query(LargeN).where(LargeN.degeneracy > 2).where(LargeN.size == N).all()
     )
     od_bins = np.array([((2 * i) / N) - 1 for i in range(N + 1)])
     for instance in tqdm(instances):
         reduced_gs, _ = ground_state_service.maximal_half_clique(
-            instance.ground_states, N
+            instance.ground_states, instance.size
         )
-        overlap_dist = ground_state_service.overlap_distribution_fair(reduced_gs, N)
+        overlap_dist = ground_state_service.overlap_distribution_fair(
+            instance.ground_states, instance.size
+        )
         overlap_dist = overlap_dist.tolist()
         od_mean = np.sum(od_bins * overlap_dist)
         od_variance = np.sum(overlap_dist * (od_bins - od_mean) ** 2)
 
-        gs_array = reduced_gs
-        deg = instance.degeneracy // 2
+        gs_array = instance.ground_states
+        deg = instance.degeneracy
         H = np.zeros((deg, deg))
         for i in range(deg):
             for j in range(i + 1, deg):

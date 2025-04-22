@@ -41,6 +41,14 @@ class InstancesN8(Base):
     dist_fair_sampling = Column(Integer, nullable=True)
     dist_post_anneal = Column(Integer, nullable=True)
 
+    # Macroscopic measures full gs
+    full_gs_od_variance = Column(REAL, nullable=True)
+    full_gs_post_anneal_od_variance = Column(REAL, nullable=True)
+    full_gs_qfi_fair_sampling = Column(Integer, nullable=True)
+    full_gs_qfi_post_anneal = Column(Integer, nullable=True)
+
+    full_post_anneal_gs_probs = Column(JSON, nullable=True)
+
 
 class InstancesN12(Base):
     __tablename__ = "instances_N12"
@@ -78,6 +86,14 @@ class InstancesN12(Base):
     dist_fair_sampling = Column(Integer, nullable=True)
     dist_post_anneal = Column(Integer, nullable=True)
 
+    # Macroscopic measures full gs
+    full_gs_od_variance = Column(REAL, nullable=True)
+    full_gs_post_anneal_od_variance = Column(REAL, nullable=True)
+    full_gs_qfi_fair_sampling = Column(Integer, nullable=True)
+    full_gs_qfi_post_anneal = Column(Integer, nullable=True)
+
+    full_post_anneal_gs_probs = Column(JSON, nullable=True)
+
 
 class InstancesN16(Base):
     __tablename__ = "instances_N16"
@@ -114,6 +130,14 @@ class InstancesN16(Base):
     qfi_post_anneal = Column(Integer, nullable=True)
     dist_fair_sampling = Column(Integer, nullable=True)
     dist_post_anneal = Column(Integer, nullable=True)
+
+    # Macroscopic measures full gs
+    full_gs_od_variance = Column(REAL, nullable=True)
+    full_gs_post_anneal_od_variance = Column(REAL, nullable=True)
+    full_gs_qfi_fair_sampling = Column(Integer, nullable=True)
+    full_gs_qfi_post_anneal = Column(Integer, nullable=True)
+
+    full_post_anneal_gs_probs = Column(JSON, nullable=True)
 
 
 class LargeN(Base):
