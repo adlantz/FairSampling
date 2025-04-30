@@ -39,7 +39,7 @@ def build_capped_hamming_Aij(gs_list: list, gs_size: int, h_d_cap: int, N: int):
 
 
 def base_N_hamming_distance(i: int, j: int) -> int:
-    return (i ^ j).bit_count()
+    return bin(i ^ j).count("1")
 
 
 def max_inter_gs_hd(gs_list: list[int], N: int) -> int:
@@ -77,9 +77,9 @@ def overlap_list(gs_list: list[int], N: int) -> np.ndarray:
 def overlap_distribution_fair(gs_list: list[int], N: int) -> np.ndarray:
     gs_size = len(gs_list)
     overlap_dist = np.zeros(N + 1)
-    overlap_dist[-1] = 1 / gs_size # (gs_size / gs_size^2)
+    overlap_dist[-1] = 1 / gs_size  # (gs_size / gs_size^2)
     for i in range(gs_size):
-        for j in range(i+1, gs_size):
+        for j in range(i + 1, gs_size):
             h_d = base_N_hamming_distance(gs_list[i], gs_list[j])
             overlap_dist[-h_d - 1] += 2 / (gs_size**2)
     return overlap_dist
@@ -93,5 +93,5 @@ def overlap_distribution_weighted(
     for i in range(gs_size):
         for j in range(i, gs_size):
             h_d = base_N_hamming_distance(gs_list[i], gs_list[j])
-            overlap_dist[-h_d - 1] += (1  if i == j else 2) * gs_probs[i] * gs_probs[j]
+            overlap_dist[-h_d - 1] += (1 if i == j else 2) * gs_probs[i] * gs_probs[j]
     return overlap_dist
