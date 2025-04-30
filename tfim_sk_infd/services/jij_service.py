@@ -73,21 +73,22 @@ def full_Jij_matrix(Jij: Jij) -> np.ndarray:
 
 
 def get_toy_Jij(index: int) -> Jij:
-    match index:
-        case 1:
-            return Jij(np.array([[0, 1, 1, 1, 1], [-1, -1, 1, 0, 1]]))
-        case 2:
-            return Jij(np.array([[1, 2, -2, 1, -2], [2, 1, 1, -1, 2]]))
-        case 3:
-            return Jij(
-                np.array(
-                    [[0, 0, 0, -1, 1, 1], [0, 0, 1, 1, 1, -1], [0, 0, -1, 0, 0, -1]]
-                )
-            )
-        case 4:
-            return Jij(np.array([[0, 1, -1, -1], [0, -1, 0, -1]]))
-        case _:
-            raise Exception(f"Toy model for index {index} does not exist")
+    return Jij(np.array([[0, 1, 1, 1, 1], [-1, -1, 1, 0, 1]]))
+    # match index:
+    #     case 1:
+    #         return Jij(np.array([[0, 1, 1, 1, 1], [-1, -1, 1, 0, 1]]))
+    #     case 2:
+    #         return Jij(np.array([[1, 2, -2, 1, -2], [2, 1, 1, -1, 2]]))
+    #     case 3:
+    #         return Jij(
+    #             np.array(
+    #                 [[0, 0, 0, -1, 1, 1], [0, 0, 1, 1, 1, -1], [0, 0, -1, 0, 0, -1]]
+    #             )
+    #         )
+    #     case 4:
+    #         return Jij(np.array([[0, 1, -1, -1], [0, -1, 0, -1]]))
+    #     case _:
+    #         raise Exception(f"Toy model for index {index} does not exist")
 
 
 def make_J_adj(Jij: Jij, N: int) -> np.ndarray:
