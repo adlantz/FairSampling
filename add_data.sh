@@ -7,7 +7,7 @@ set -e
 # source /path/to/venv/bin/activate
 
 # Run Python modules in order
-python -m scripts.db_fillers.0_add_instances
+# python -m scripts.db_fillers.0_add_instances
 python -m scripts.db_fillers.1_update_degeneracy_col
 python -m scripts.db_fillers.2_update_reduced_gs_hd
 python -m scripts.db_fillers.3_update_overlap_dist
