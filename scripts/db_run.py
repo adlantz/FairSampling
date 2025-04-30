@@ -13,7 +13,7 @@ Instance = data_service.get_instance_class(N)
 
 
 with data_service.get_session() as session:
-    instances: List[Union[InstancesN8, InstancesN12, InstancesN16]] = (
+    instances = (
         session.query(Instance).where(Instance.post_anneal_gs_probs.is_not(None)).all()
     )
 

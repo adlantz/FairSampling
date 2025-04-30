@@ -5,12 +5,13 @@ from tfim_sk_infd.services import ground_state_service
 import data_service
 from tqdm import tqdm
 
+
 N = 16
 Instance = data_service.get_instance_class(N)
 
 with data_service.get_session() as session:
 
-    instances: List[Union[InstancesN8, InstancesN12, InstancesN16]] = (
+    instances = (
         session.query(Instance)
         .where(Instance.degeneracy > 2)
         .where(Instance.overlap_dist.is_(None))
