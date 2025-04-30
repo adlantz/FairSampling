@@ -6,7 +6,7 @@ import itertools as it
 import data_service
 from database.models import InstancesN8, InstancesN12, InstancesN16
 from tqdm import tqdm
-
+from typing import List, Union
 
 N = 16
 
@@ -15,7 +15,7 @@ Instance = data_service.get_instance_class(N)
 
 with data_service.get_session() as session:
 
-    instances: list[InstancesN8 | InstancesN12 | InstancesN16] = (
+    instances: List[Union[InstancesN8, InstancesN12, InstancesN16]] = (
         session.query(Instance)
         .where(Instance.degeneracy > 2)
         .where(Instance.degeneracy <= 30)

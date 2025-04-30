@@ -6,6 +6,7 @@ import data_service
 from tqdm import tqdm
 from scipy import sparse
 from scipy.sparse import linalg as spla
+from typing import List, Union
 
 
 # N = 16
@@ -47,7 +48,7 @@ Instance = data_service.get_instance_class(N)
 
 with data_service.get_session() as session:
 
-    instances: list[InstancesN8 | InstancesN12 | InstancesN16] = (
+    instances: List[Union[InstancesN8, InstancesN12, InstancesN16]] = (
         session.query(Instance)
         .where(Instance.degeneracy > 2)
         .where(Instance.full_post_anneal_gs_probs.is_(None))
