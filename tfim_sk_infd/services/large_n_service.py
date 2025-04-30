@@ -38,4 +38,4 @@ def binary_to_decimal(array):
 def generate_ground_states_bm(N: int, seed: int):
     Jij = jij_service.Jij_instance(N, seed=seed)
     bm = biqMac(Jij)
-    return [binary_to_decimal(b) for b in bm]
+    return [binary_to_decimal(b) for b in bm], Jij

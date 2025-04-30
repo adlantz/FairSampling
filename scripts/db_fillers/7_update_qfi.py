@@ -14,7 +14,10 @@ Instance = data_service.get_instance_class(N)
 
 with data_service.get_session() as session:
     instances: list[InstancesN8 | InstancesN12 | InstancesN16] = (
-        session.query(Instance).where(Instance.degeneracy > 2).all()
+        session.query(Instance)
+        .where(Instance.degeneracy > 2)
+        .where(Instance.qfi_post_anneal.is_(None))
+        .all()
     )
 
     for instance in tqdm(instances):

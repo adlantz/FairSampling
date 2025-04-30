@@ -7,14 +7,17 @@ import data_service
 from database.models import InstancesN8, InstancesN12, InstancesN16
 from tqdm import tqdm
 
-N = 8
+N = 16
 
 Instance = data_service.get_instance_class(N)
 
 
 with data_service.get_session() as session:
     instances: list[InstancesN8 | InstancesN12 | InstancesN16] = (
-        session.query(Instance).where(Instance.degeneracy > 2).all()
+        session.query(Instance)
+        .where(Instance.degeneracy > 2)
+        .where(Instance.full_gs_post_anneal_od_variance.is_(None))
+        .all()
     )
     od_bins = np.array([((2 * i) / N) - 1 for i in range(N + 1)])
     for instance in tqdm(instances):

@@ -1,7 +1,5 @@
 import numpy as np
-
 from database.models import InstancesN8, InstancesN12, InstancesN16
-from tfim_sk_infd.services import qutip_service
 from tfim_sk_infd.models.Jij import Jij
 from tfim_sk_infd.models.SKSpinGlass import SKSpinGlass
 import data_service
@@ -9,16 +7,39 @@ from tqdm import tqdm
 from scipy import sparse
 from scipy.sparse import linalg as spla
 
+
+# N = 16
+# M = 2**N
+
+
+# # Spin inversion operator
+# U = np.zeros((M, M))
+# for i in range(M):
+#     U[i][i] = 1 if i < (M) // 2 else -1
+#     U[i][-i - 1] = 1
+# U /= np.sqrt(2)
+# U = sparse.coo_matrix(U)
+
+
 N = 16
 M = 2**N
 
-# Spin inversion operator
-U = np.zeros((M, M))
+rows = []
+cols = []
+data = []
+
 for i in range(M):
-    U[i][i] = 1 if i < (M) // 2 else -1
-    U[i][-i - 1] = 1
+    val = 1.0 if i < M // 2 else -1.0
+    rows.append(i)
+    cols.append(i)
+    data.append(val)
+
+    rows.append(i)
+    cols.append(M - i - 1)
+    data.append(1.0)
+
+U = sparse.coo_matrix((data, (rows, cols)), shape=(M, M))
 U /= np.sqrt(2)
-U = sparse.coo_matrix(U)
 
 
 Instance = data_service.get_instance_class(N)
@@ -29,7 +50,7 @@ with data_service.get_session() as session:
     instances: list[InstancesN8 | InstancesN12 | InstancesN16] = (
         session.query(Instance)
         .where(Instance.degeneracy > 2)
-        .where(Instance.diag_run_failure.is_(None))
+        .where(Instance.full_post_anneal_gs_probs.is_(None))
         .all()
     )
 
@@ -88,6 +109,9 @@ with data_service.get_session() as session:
             i += 1
 
         if i > 1:
+            instance.full_post_anneal_gs_probs = (
+                psi0_complete[instance.ground_states] ** 2
+            ).tolist()
             gs_probs = 2 * psi0_complete[instance.reduced_gs] ** 2
             instance.post_anneal_gs_probs = gs_probs.tolist()
             instance.post_anneal_supp_ratio = round(
