@@ -6,7 +6,7 @@ from tfim_sk_infd.services import large_n_service
 ## ADJUST THESE
 N = 16
 seed_start = 2050
-seed_end = 3000
+seed_end = 5000
 batch_size = 100
 
 
