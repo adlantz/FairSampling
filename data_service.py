@@ -2,7 +2,13 @@ import json
 import os
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, Session
-from database.models import InstancesN8, InstancesN12, InstancesN16
+from database.models import (
+    InstancesN8,
+    InstancesN12,
+    InstancesN16,
+    InstancesN18,
+    InstancesN20,
+)
 
 # from typing import Union
 
@@ -31,4 +37,10 @@ def save_obj(database: str, path: str, filename: str, json_str_obj: dict):
 
 
 def get_instance_class(N: int):
-    return {8: InstancesN8, 12: InstancesN12, 16: InstancesN16}.get(N)
+    return {
+        8: InstancesN8,
+        12: InstancesN12,
+        16: InstancesN16,
+        18: InstancesN18,
+        20: InstancesN20,
+    }.get(N)

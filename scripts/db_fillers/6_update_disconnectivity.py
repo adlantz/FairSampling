@@ -13,7 +13,9 @@ from tqdm import tqdm
 fair_discs = []
 pa_discs = []
 
-N = 16
+import sys
+
+N = int(sys.argv[1])
 
 Instance = data_service.get_instance_class(N)
 

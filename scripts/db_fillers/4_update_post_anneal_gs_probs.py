@@ -21,7 +21,9 @@ from scipy.sparse import linalg as spla
 # U = sparse.coo_matrix(U)
 
 
-N = 16
+import sys
+
+N = int(sys.argv[1])
 M = 2**N
 
 rows = []

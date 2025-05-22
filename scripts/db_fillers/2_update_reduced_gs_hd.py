@@ -5,7 +5,9 @@ from tqdm import tqdm
 
 from database.models import InstancesN8, InstancesN12, InstancesN16
 
-N = 16
+import sys
+
+N = int(sys.argv[1])
 
 Instance = data_service.get_instance_class(N)
 

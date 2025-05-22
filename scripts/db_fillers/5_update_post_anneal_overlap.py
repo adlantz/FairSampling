@@ -5,7 +5,9 @@ import data_service
 from tqdm import tqdm
 
 
-N = 16
+import sys
+
+N = int(sys.argv[1])
 
 
 Instance = data_service.get_instance_class(N)

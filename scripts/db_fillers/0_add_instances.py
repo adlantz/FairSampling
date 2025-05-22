@@ -2,12 +2,15 @@ import data_service
 import numpy as np
 from tqdm import tqdm
 from tfim_sk_infd.services import large_n_service
+import sys
 
 ## ADJUST THESE
-N = 16
-seed_start = 2050
-seed_end = 5000
-batch_size = 100
+import sys
+
+N = int(sys.argv[1])
+seed_start = int(sys.argv[2])
+seed_end = int(sys.argv[3])
+batch_size = int(sys.argv[4])
 
 
 # SCRIPT
