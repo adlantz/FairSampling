@@ -3,10 +3,10 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-N=18
+N=20
 sstart=0
-send=5
-batch=5
+send=250
+batch=10
 
 # Optional: activate your virtual environment
 # source /path/to/venv/bin/activate
