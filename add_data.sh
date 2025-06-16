@@ -3,13 +3,10 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-N=20
-sstart=0
-send=250
-batch=10
-
-# Optional: activate your virtual environment
-# source /path/to/venv/bin/activate
+N=$1
+sstart=$2
+send=$3
+batch=$4
 
 # Run Python modules in order
 python -m scripts.db_fillers.0_add_instances "$N" "$sstart" "$send" "$batch"
