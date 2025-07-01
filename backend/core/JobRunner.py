@@ -6,12 +6,16 @@ from database.models import (
     Instance,
     InstanceGroundStates,
     InstancePostAnnealingInfo,
+    InstanceMetrics,
 )
 from core.Jij import Jij
 from core.BranchBoundSolver import BB
 from core.QuantumSpinGlass import QuantumSpinGlass
+from core.MetricsCalculator import MetricsCalculator
+from core.helper import maximal_half_clique
 import numpy as np
 from tqdm import tqdm
+from typing import Optional
 
 
 class JobRunner:
@@ -34,12 +38,16 @@ class JobRunner:
 
                 instance = self._generate_instance(self.N, seed)
                 instance_ground_states = self._calculate_ground_states(instance)
-
-                if self.params.get("annealing"):
+                instance_post_annealing_info = (
                     self._run_annealing(instance, instance_ground_states)
+                    if self.params.get("annealing")
+                    else None
+                )
 
                 if self.params.get("metrics"):
-                    self._calculate_metrics(seed)
+                    self._calculate_metrics(
+                        instance, instance_ground_states, instance_post_annealing_info
+                    )
 
             self._update_status("successful")
         except Exception as e:
@@ -63,19 +71,29 @@ class JobRunner:
         self.session.commit()
         return record
 
-    def _calculate_ground_states(self, instance):
+    def _calculate_ground_states(self, instance: Instance) -> InstanceGroundStates:
         Q2 = Jij(np.array(instance.jij_matrix)).full_Jij_matrix()
         P2 = Q2.sum(axis=1)
         R2 = Q2.sum()
         ground_states = BB(-2 * Q2, 2 * P2, -0.5 * R2).get_ground_states()
+        degeneracy = len(ground_states)
+        reduced_gs = (
+            maximal_half_clique(ground_states, self.N) if degeneracy > 2 else None
+        )
         record = InstanceGroundStates(
-            N=instance.N, seed=instance.seed, ground_states=ground_states
+            N=instance.N,
+            seed=instance.seed,
+            ground_states=ground_states,
+            reduced_gs=reduced_gs,
+            degeneracy=degeneracy,
         )
         self.session.merge(record)
         self.session.commit()
         return record
 
-    def _run_annealing(self, instance, instance_ground_states):
+    def _run_annealing(
+        self, instance: Instance, instance_ground_states: InstanceGroundStates
+    ) -> InstancePostAnnealingInfo:
         QSG = QuantumSpinGlass(
             Jij(np.array(instance.jij_matrix)), instance_ground_states.ground_states
         )
@@ -99,9 +117,32 @@ class JobRunner:
         )
         self.session.merge(record)
         self.session.commit()
+        return record
 
-        # add your computation here
+    def _calculate_metrics(
+        self,
+        instance: Instance,
+        instance_ground_states: InstanceGroundStates,
+        instance_post_annealing_info: Optional[InstancePostAnnealingInfo] = None,
+    ) -> None:
+        metrics_dict = MetricsCalculator(
+            self.N,
+            instance_ground_states.ground_states,
+            instance_post_annealing_info and instance_post_annealing_info.gs_amplitudes,
+        ).calculate_metrics()
 
-    def _calculate_metrics(self, seed):
-        pass
-        # add your computation here
+        record = InstanceMetrics(
+            N=self.N,
+            seed=instance.seed,
+            fs_od=metrics_dict.get("fs_od"),
+            fs_od_mean=metrics_dict.get("fs_od_mean"),
+            fs_od_var=metrics_dict.get("fs_od_var"),
+            fs_qfi=metrics_dict.get("fs_qfi"),
+            pa_od=metrics_dict.get("pa_od"),
+            pa_od_mean=metrics_dict.get("pa_od_mean"),
+            pa_od_var=metrics_dict.get("pa_od_var"),
+            pa_qfi=metrics_dict.get("pa_qfi"),
+        )
+
+        self.session.merge(record)
+        self.session.commit()

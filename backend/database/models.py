@@ -16,6 +16,8 @@ class InstanceGroundStates(SQLModel, table=True):
     N: int = Field(primary_key=True)
     seed: int = Field(primary_key=True)
     ground_states: Optional[List] = Field(sa_column=Column(JSON))
+    reduced_gs: Optional[List] = Field(sa_column=Column(JSON, nullable=True))
+    degeneracy: Optional[int] = None
 
 
 class InstancePostAnnealingInfo(SQLModel, table=True):
@@ -27,6 +29,21 @@ class InstancePostAnnealingInfo(SQLModel, table=True):
     diag_run_fidelities: Optional[List[float]] = Field(sa_column=Column(JSON))
     diag_run_e_gaps: Optional[List[float]] = Field(sa_column=Column(JSON))
     diag_run_failure: Optional[bool] = None
+
+
+class InstanceMetrics(SQLModel, table=True):
+    N: int = Field(primary_key=True)
+    seed: int = Field(primary_key=True)
+
+    fs_od: Optional[Dict] = Field(sa_column=Column(JSON))
+    fs_od_mean: Optional[float] = None
+    fs_od_var: Optional[float] = None
+    fs_qfi: Optional[float] = None
+
+    pa_od: Optional[Dict] = Field(sa_column=Column(JSON))
+    pa_od_mean: Optional[float] = None
+    pa_od_var: Optional[float] = None
+    pa_qfi: Optional[float] = None
 
 
 class Job(SQLModel, table=True):
