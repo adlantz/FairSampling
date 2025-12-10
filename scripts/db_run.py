@@ -49,7 +49,7 @@ seed = 1
 gs, Jij = large_n_service.generate_ground_states_bm(N, seed)
 
 
-print(Jij.matrix)
+# print(Jij.matrix)
 print(Jij.matrix.size)
 
 print(gs)
